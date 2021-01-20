@@ -6,6 +6,7 @@ import Block from './Block';
 
 const Button = ({
   style,
+  fullStyle,
   opacity,
   color,
   shadow,
@@ -17,10 +18,12 @@ const Button = ({
   colorIcon,
 }) => {
   const buttonStyles = [
-    styles.button,
     shadow && styles.shadow, // shadow for IOS, elevation for android
     color && styles[color], // predefined styles colors for backgroundColor
     color && !styles[color] && { backgroundColor: color }, // custom backgroundColor
+    style !== null && fullStyle && { backgroundColor: theme.colors.secondary },
+    style !== null && !fullStyle && { borderWidth: 3, borderColor: theme.colors.secondary },
+    style !== null && styles.button,
     style,
   ];
 
@@ -59,7 +62,8 @@ Button.defaultProps = {
   renderIcon: true,
   colorBackgroundIcon: theme.colors.white,
   colorIcon: theme.colors.black,
-  nameIcon: 'arrowright'
+  nameIcon: 'arrowright',
+  fullStyle: true
 };
 
 const styles = StyleSheet.create({
@@ -68,7 +72,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: theme.sizes.padding / 3,
     marginTop: theme.sizes.base / 2,
-    backgroundColor: theme.colors.secondary,
+    paddingLeft: theme.sizes.base,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
