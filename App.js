@@ -1,16 +1,10 @@
-import * as React from "react";
-import { View, Text } from "react-native";
+import React, { useState } from "react";
+import { Block, Text } from "./src/elements";
 
 export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>My Routines</Text>
-    </View>
+    <Block middle>
+      <Text center>My Routines</Text>
+    </Block>
   );
 }
