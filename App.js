@@ -1,10 +1,13 @@
-import React, { useState } from "react";
-import { Block, Text } from "./src/elements";
+import * as React from 'react';
+import { StatusBar } from 'react-native';
+import { Block } from './src/elements';
+import AppContainer from './src/routes';
 
 export default function App() {
   return (
-    <Block middle>
-      <Text center>My Routines</Text>
+    <Block>
+      <StatusBar barStyle="light-content" />
+      <AppContainer />
     </Block>
   );
 }
