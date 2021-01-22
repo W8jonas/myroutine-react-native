@@ -4,13 +4,18 @@ import { Block, Button, Text } from '../elements';
 import { theme } from '../constants';
 import { Background } from '../components';
 import SignInScreen from './SignInScreen';
+import SignUpScreen from './SignUpScreen';
 
 
 const welcome = () => {
 
   const [isSignIn, setIsSignIn] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
 
   const [positionAreaSignIn] = useState(
+    new Animated.Value(Dimensions.get('window').width)
+  );
+  const [positionAreaSignUp] = useState(
     new Animated.Value(Dimensions.get('window').width)
   );
   const [positionButton] = useState(new Animated.Value(0));
@@ -31,21 +36,35 @@ const welcome = () => {
       }).start();
     }
 
-    /** Button */
-    if (!isSignIn) {
-      Animated.timing(positionButton, {
+    if (isSignUp) {
+      Animated.timing(positionAreaSignUp, {
         toValue: 0,
         duration: 300,
         useNativeDriver: false,
       }).start();
-    } else if (isSignIn) {
-      Animated.timing(positionButton, {
+    } else if (!isSignUp) {
+      Animated.timing(positionAreaSignUp, {
         toValue: Dimensions.get('window').width,
         duration: 300,
         useNativeDriver: false,
       }).start();
     }
-  }, [isSignIn]);
+
+    /** Button */
+    if (isSignIn || isSignUp) {
+      Animated.timing(positionButton, {
+        toValue: Dimensions.get('window').width,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    } else if (!isSignIn || !isSignUp) {
+      Animated.timing(positionButton, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+  }, [isSignIn, isSignUp]);
 
 
   const renderSignIn = () => {
@@ -63,13 +82,29 @@ const welcome = () => {
     ); 
   }
 
+  const renderSignUp = () => {
+    return (
+      <Block
+        animated
+        absolute
+        index={2}
+        height={Dimensions.get('window').height / 1.5}
+        width={Dimensions.get('window').width}
+        style={{ right: 0, left: positionAreaSignUp, bottom: 0 }}
+      >
+        <SignUpScreen setIsSignUp={setIsSignUp} />
+      </Block>
+    ); 
+  }
+
   return (
     <Block>
       {renderSignIn()}
+      {renderSignUp()}
       <Background>
         <Block padding={[theme.sizes.padding * 2, theme.sizes.padding]}>
           <Block
-            flex={0.4}
+            flex={0.35}
             middle
             padding={[theme.sizes.padding * 2, theme.sizes.padding]}
           >
@@ -87,16 +122,14 @@ const welcome = () => {
               </Text>
             </Block>
           </Block>
-          <Block column bottom flex={0.6}>
+          <Block column bottom flex={0.75}>
             <Block flex={false} animated style={{ right: positionButton }}>
               <Button onPress={() => setIsSignIn(true)}>
                 <Text white bold>
                   Sign In
                 </Text>
               </Button>
-            </Block>
-            <Block flex={false} animated style={{ right: positionButton }}>
-              <Button fullStyle={false}>
+              <Button fullStyle={false} onPress={() => setIsSignUp(true)}>
                 <Text white bold>
                   Sign Up
                 </Text>
