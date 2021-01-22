@@ -21,9 +21,9 @@ const Button = ({
     shadow && styles.shadow, // shadow for IOS, elevation for android
     color && styles[color], // predefined styles colors for backgroundColor
     color && !styles[color] && { backgroundColor: color }, // custom backgroundColor
-    style !== null && fullStyle && { backgroundColor: theme.colors.secondary },
-    style !== null && !fullStyle && { borderWidth: 3, borderColor: theme.colors.secondary },
-    style !== null && styles.button,
+    !style && fullStyle && { backgroundColor: theme.colors.secondary },
+    !style && !fullStyle && { borderWidth: 3, borderColor: theme.colors.secondary },
+    !style && styles.button,
     style,
   ];
 
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     marginTop: theme.sizes.base / 2,
     paddingLeft: theme.sizes.base,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   shadow: {
     shadowColor: theme.colors.tertiary,

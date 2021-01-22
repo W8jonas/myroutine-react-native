@@ -41,7 +41,7 @@ const welcome = () => {
               </Text>
             </Button>
             <Block flex={false} padding={[theme.sizes.base, 0]}>
-              <Button renderIcon={false} style={null}>
+              <Button renderIcon={false} style>
                 <Text
                   center
                   white
