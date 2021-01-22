@@ -25,6 +25,7 @@ const Block = ({
   style,
   border,
   absolute,
+  fullAbsolute,
   fullBorder,
   children,
   animated,
@@ -127,6 +128,7 @@ const Block = ({
     width && { width },
     height && { height },
     absolute && { position: 'absolute' },
+    fullAbsolute && [StyleSheet.absoluteFill],
     index && { zIndex: index },
     border && styles.border,
     fullBorder && styles.fullBorder,
@@ -156,10 +158,7 @@ const Block = ({
       <Animated.View
         ref={reference}
         key={key}
-        style={[
-          absolute === true ? StyleSheet.absoluteFill : null,
-          blockStyles,
-        ]}
+        style={blockStyles}
         onLayout={onLayout}
       >
         {children}

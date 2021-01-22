@@ -53,6 +53,7 @@ const Input = ({
 
     return (
       <Button
+        renderIcon={false}
         style={styles.toggle}
         onPress={() =>
           setIsToggleSecure((toggleSecure) => (toggleSecure = !toggleSecure))
@@ -62,7 +63,7 @@ const Input = ({
           rightLabel
         ) : (
           <Icon
-            color={theme.colors.white}
+            color={theme.colors.black}
             size={theme.sizes.font * 1.35}
             name={!toggleSecure ? 'md-eye' : 'md-eye-off'}
           />
@@ -173,8 +174,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     width: theme.sizes.base * 2,
     height: theme.sizes.base * 2,
-    top: theme.sizes.base * 2.7,
-    paddingRight: theme.sizes.base,
+    top: theme.sizes.base * 2.2,
+    paddingRight: theme.sizes.caption,
     right: 0,
   },
 });
