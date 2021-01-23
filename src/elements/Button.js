@@ -37,6 +37,7 @@ const Button = ({
         color={colorBackgroundIcon}
         center
         middle
+        style={ !style && !fullStyle && { left: 3 } }
       >
         <AntDesign name={nameIcon} size={18} color={colorIcon} />
       </Block>

@@ -19,6 +19,8 @@ const welcome = () => {
     new Animated.Value(Dimensions.get('window').width)
   );
   const [positionButton] = useState(new Animated.Value(0));
+  const [openProgress] = useState(new Animated.Value(0));
+  const [closeProgress] = useState(new Animated.Value(1));
 
   useEffect(() => {
     /** Area */
@@ -64,6 +66,35 @@ const welcome = () => {
         useNativeDriver: false,
       }).start();
     }
+
+    /** Text */
+    if (isSignIn || isSignUp) {
+      Animated.timing(openProgress, {
+        toValue: 1,
+        duration: 900,
+        useNativeDriver: false,
+      }).start();
+    } else if (!isSignIn || !isSignUp) {
+      Animated.timing(openProgress, {
+        toValue: 0,
+        duration: 900,
+        useNativeDriver: false,
+      }).start();
+    }
+
+    if(!isSignIn && !isSignUp ) {
+      Animated.timing(closeProgress, {
+        toValue: 1,
+        duration: 900,
+        useNativeDriver: false,
+      }).start();
+    } else if(isSignIn || isSignUp) {
+      Animated.timing(closeProgress, {
+        toValue: 0,
+        duration: 900,
+        useNativeDriver: false,
+      }).start();
+    }
   }, [isSignIn, isSignUp]);
 
 
@@ -105,7 +136,6 @@ const welcome = () => {
         <Block padding={[theme.sizes.padding * 2, theme.sizes.padding]}>
           <Block
             flex={0.2}
-            middle
             padding={[theme.sizes.padding * 2, theme.sizes.padding]}
           >
             <Text white bold h2>
@@ -116,10 +146,62 @@ const welcome = () => {
               style={{ paddingTop: theme.sizes.base }}
               width={Dimensions.get('window').width / 2.2}
             >
-              <Text white light>
-                Don't go crazy, schedule your appointments and make time to
-                breathe.
-              </Text>
+              {!isSignIn && !isSignUp && (
+                <Block
+                  flex={false}
+                  animated
+                  style={{
+                    opacity: closeProgress.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 1],
+                    }),
+                  }}
+                >
+                  <Text white light>
+                    Don't go crazy, schedule your appointments and make time to
+                    breathe.
+                  </Text>
+                </Block>
+              )}
+              {isSignIn && (
+                <Block
+                  flex={false}
+                  animated
+                  style={{
+                    opacity: openProgress.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 1],
+                    }),
+                  }}
+                >
+                  <Text white light>
+                    let's{' '}
+                    <Text white medium>
+                      access
+                    </Text>{' '}
+                    our agenda
+                  </Text>
+                </Block>
+              )}
+              {isSignUp && (
+                <Block
+                  flex={false}
+                  animated
+                  style={{
+                    opacity: openProgress.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 1],
+                    }),
+                  }}
+                >
+                  <Text white light>
+                    first you need to{' '}
+                    <Text white medium>
+                      create an account
+                    </Text>
+                  </Text>
+                </Block>
+              )}
             </Block>
           </Block>
           <Block column bottom flex={0.8}>
@@ -134,7 +216,6 @@ const welcome = () => {
                   Sign Up
                 </Text>
               </Button>
-            </Block>
             <Block flex={false} padding={[theme.sizes.base, 0]}>
               <Button renderIcon={false} style>
                 <Text
@@ -146,6 +227,7 @@ const welcome = () => {
                   recover my password
                 </Text>
               </Button>
+            </Block>
             </Block>
           </Block>
         </Block>
