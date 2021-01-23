@@ -5,8 +5,8 @@ import { Block, Button, Input, Text } from '../elements';
 
 const signIn = ({ setIsSignIn }) => {
 
-  const [nameOrEmail, setNameOrEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [nameOrEmail, setNameOrEmail] = useState('marlon.belohd@gmail.com');
+  const [password, setPassword] = useState('12345');
   
   return (
     <Block

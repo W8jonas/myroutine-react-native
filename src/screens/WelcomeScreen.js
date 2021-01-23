@@ -88,7 +88,7 @@ const welcome = () => {
         animated
         absolute
         index={2}
-        height={Dimensions.get('window').height / 1.5}
+        height={Dimensions.get('window').height / 1.4}
         width={Dimensions.get('window').width}
         style={{ right: 0, left: positionAreaSignUp, bottom: 0 }}
       >
@@ -104,7 +104,7 @@ const welcome = () => {
       <Background>
         <Block padding={[theme.sizes.padding * 2, theme.sizes.padding]}>
           <Block
-            flex={0.35}
+            flex={0.2}
             middle
             padding={[theme.sizes.padding * 2, theme.sizes.padding]}
           >
@@ -122,7 +122,7 @@ const welcome = () => {
               </Text>
             </Block>
           </Block>
-          <Block column bottom flex={0.75}>
+          <Block column bottom flex={0.8}>
             <Block flex={false} animated style={{ right: positionButton }}>
               <Button onPress={() => setIsSignIn(true)}>
                 <Text white bold>
