@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { theme } from '../constants';
 import { Block, Button, Input, Text } from '../elements';
 
-const signIn = ({ setIsSignIn }) => {
+const signIn = ({ setIsSignIn, navigation }) => {
 
   const [nameOrEmail, setNameOrEmail] = useState('marlon.belohd@gmail.com');
   const [password, setPassword] = useState('12345');
@@ -35,7 +35,7 @@ const signIn = ({ setIsSignIn }) => {
         flex={false}
         padding={[theme.sizes.padding * 2, 0, theme.sizes.padding, 0]}
       >
-        <Button>
+        <Button onPress={() => navigation.navigate('Browser')}>
           <Text bold white>
             Sign In
           </Text>

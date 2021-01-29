@@ -1,3 +1,5 @@
 import Background from './Background';
+import Options from './Options';
+import Item from './Item';
 
-export { Background };
+export { Background, Options, Item };

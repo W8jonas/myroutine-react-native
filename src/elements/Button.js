@@ -16,6 +16,8 @@ const Button = ({
   renderIcon,
   colorBackgroundIcon,
   colorIcon,
+  onLayout,
+  reference
 }) => {
   const buttonStyles = [
     shadow && styles.shadow, // shadow for IOS, elevation for android
@@ -49,6 +51,8 @@ const Button = ({
       style={buttonStyles}
       activeOpacity={opacity || 0.8}
       onPress={onPress}
+      onLayout={onLayout}
+      ref={reference}
     >
       {children}
       {renderIcon && icon()}

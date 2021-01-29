@@ -7,7 +7,7 @@ import SignInScreen from './SignInScreen';
 import SignUpScreen from './SignUpScreen';
 
 
-const welcome = () => {
+const welcome = ({ navigation }) => {
 
   const [isSignIn, setIsSignIn] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
@@ -108,7 +108,7 @@ const welcome = () => {
         width={Dimensions.get('window').width}
         style={{ right: 0, left: positionAreaSignIn, bottom: 0 }}
       >
-        <SignInScreen setIsSignIn={setIsSignIn} />
+        <SignInScreen setIsSignIn={setIsSignIn} navigation={navigation} />
       </Block>
     ); 
   }
