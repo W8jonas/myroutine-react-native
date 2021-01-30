@@ -25,7 +25,7 @@ const card = ({ title, important, hour, address, date, icon }) => {
     <Button renderIcon={false} style>
       <Block
         flex={false}
-        margin={[0, 0, theme.sizes.padding, 0]}
+        margin={[0, theme.sizes.caption /2, theme.sizes.padding, theme.sizes.caption/2]}
         padding={theme.sizes.caption}
         card
         color={'white'}
