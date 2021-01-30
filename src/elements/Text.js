@@ -32,6 +32,7 @@ const Typography = ({
   gray,
   style,
   children,
+  numberOfLines
 }) => {
   const textStyles = [
     styles.text,
@@ -65,7 +66,7 @@ const Typography = ({
     style, // rewrite predefined styles
   ];
 
-  return <Text style={textStyles}>{children}</Text>;
+  return <Text numberOfLines={numberOfLines} style={textStyles}>{children}</Text>;
 };
 
 export default Typography;
