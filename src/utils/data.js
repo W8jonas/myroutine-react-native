@@ -9,7 +9,7 @@ export default [
         date: '04/14/2021',
         hour: '08:00',
         important: true,
-        icons: [],
+        icon: require('../assets/images/Icon-1.png'),
       },
       {
         title: 'meeting with customers',
@@ -17,7 +17,7 @@ export default [
         date: '04/18/2021',
         hour: '22:00',
         important: true,
-        icons: [],
+        icon: null,
       },
       {
         title: 'give training on the new tool',
@@ -25,7 +25,7 @@ export default [
         date: '04/24/2021',
         hour: '16:00',
         important: true,
-        icons: [],
+        icon: null,
       },
     ],
   },

@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   shadow: {
-    shadowColor: theme.colors.tertiary,
+    shadowColor: theme.colors.black,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 10,
     shadowRadius: 1,
