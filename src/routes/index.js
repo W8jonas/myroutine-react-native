@@ -35,11 +35,13 @@ export default function Navigator() {
               </Button>
             ),
             headerRight: () => (
-              <MaterialIcons
-                name={'brightness-6'}
-                size={18}
-                color={theme.colors.black}
-              />
+              <Button renderIcon={false} style>
+                <MaterialIcons
+                  name={'brightness-6'}
+                  size={18}
+                  color={theme.colors.black}
+                />
+              </Button>
             ),
             headerTransparent: true,
             headerBackTitleVisible: null,
