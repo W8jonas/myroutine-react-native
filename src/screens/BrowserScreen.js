@@ -72,7 +72,6 @@ const browser = () => {
           </Button>
         ) : (
           <CreateAppointment
-            isAdd={isAdd}
             loadAdd={loadAdd}
             animationCompleted={animationCompleted}
           />

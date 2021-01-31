@@ -1,16 +1,29 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
-import { Dimensions, Switch } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Animated, Dimensions, Switch } from 'react-native';
 import { theme } from '../constants';
 import { Block, Button, Input, Photo, Text } from '../elements';
 import { icons } from '../utils';
 
-const createAppointment = ({ isAdd, loadAdd, animationCompleted }) => {
+const createAppointment = ({ loadAdd, animationCompleted }) => {
   const [title, setTitle] = useState('');
   const [address, setAddress] = useState('');
   const [date, setDate] = useState(new Date().toLocaleDateString());
   const [hour, setHour] = useState(new Date().toLocaleTimeString());
   const [switchValue, setSwitchValue] = useState(false);
+
+  const [loadCreator, setLoadCreator] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+
+    if(animationCompleted) {
+      Animated.timing(loadCreator, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+  }, [animationCompleted])
 
   return (
     <Block
@@ -30,7 +43,15 @@ const createAppointment = ({ isAdd, loadAdd, animationCompleted }) => {
       }}
     >
       {animationCompleted && (
-        <Block>
+        <Block
+          animated
+          style={{
+            opacity: loadCreator.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 1],
+            }),
+          }}
+        >
           <Block flex={false} margin={theme.sizes.caption / 2}>
             <Button renderIcon={false} style>
               <MaterialIcons
