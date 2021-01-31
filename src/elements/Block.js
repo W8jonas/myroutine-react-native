@@ -215,8 +215,8 @@ export const styles = StyleSheet.create({
     elevation: 3, // for android devices
   },
   border: {
-    borderBottomWidth: 1,
-    borderColor: theme.colors.secondary,
+    borderBottomWidth: 2,
+    borderColor: theme.colors.tertiary,
   },
   fullBorder: {
     borderWidth: 3,

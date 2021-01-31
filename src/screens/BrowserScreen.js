@@ -1,45 +1,82 @@
+import React, { useEffect, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
-import { Dimensions, FlatList, ScrollView, StatusBar } from 'react-native';
-import { Background, Options, Item, Card } from '../components';
+import { Animated, Dimensions, FlatList, ScrollView, StatusBar } from 'react-native';
+import { Background, Options, Item, Card, CreateAppointment } from '../components';
 import { theme } from '../constants';
-import { Block, Button } from '../elements';
+import { Block, Button} from '../elements';
 import { data } from '../utils';
 
 const browser = () => {
-  
+
   const [selectedOrigin, setSelectedOrigin] = useState(1);
   const [selected, setSelected] = useState(selectedOrigin);
+
+  const [loadAdd, setLoadAdd] = useState(new Animated.Value(0));
+  const [isAdd, setIsAdd] = useState(false);
+  const [animationCompleted, setAnimationCompleted] = useState(false);
+
+  useEffect(() => {
+    setAnimationCompleted(false);
+
+    if (isAdd) {
+      Animated.timing(loadAdd, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: false,
+      }).start(() => {
+        setAnimationCompleted(true);
+      });
+    }
+  }, [isAdd]);
 
   return (
     <Block>
       <Block
-        style={{ bottom: 0, alignSelf: 'flex-end' }}
         index={2}
         center
         middle
         absolute
-        width={100}
-        height={100}
+        animated
+        style={{
+          bottom: 0,
+          alignSelf: 'flex-end',
+          width: loadAdd.interpolate({
+            inputRange: [0, 1],
+            outputRange: [100, Dimensions.get('window').width],
+          }),
+          height: loadAdd.interpolate({
+            inputRange: [0, 1],
+            outputRange: [140, Dimensions.get('window').height],
+          }),
+        }}
       >
-        <Button
-          shadow
-          style={{ 
-            backgroundColor: theme.colors.white, 
-            height: 60, 
-            width: 60, 
-            borderRadius: theme.sizes.radius * 2,
-            justifyContent: 'center',
-            alignItems: 'center' 
-          }}
-          renderIcon={false}
-        >
-          <MaterialIcons
-            name="playlist-add"
-            size={24}
-            color={theme.colors.black}
+        {!isAdd ? (
+          <Button
+            shadow
+            style={{
+              backgroundColor: theme.colors.white,
+              height: 60,
+              width: 60,
+              borderRadius: theme.sizes.radius * 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            renderIcon={false}
+            onPress={() => setIsAdd(true)}
+          >
+            <MaterialIcons
+              name="playlist-add"
+              size={24}
+              color={theme.colors.black}
+            />
+          </Button>
+        ) : (
+          <CreateAppointment
+            isAdd={isAdd}
+            loadAdd={loadAdd}
+            animationCompleted={animationCompleted}
           />
-        </Button>
+        )}
       </Block>
       <StatusBar barStyle="dark-content" />
       <Background>
