@@ -9,23 +9,36 @@ const browser = () => {
   const [selectedOrigin, setSelectedOrigin] = useState(1);
   const [selected, setSelected] = useState(selectedOrigin);
 
-  const [loadAdd, setLoadAdd] = useState(new Animated.Value(0));
+  const [loadAdd] = useState(new Animated.Value(0));
   const [isAdd, setIsAdd] = useState(false);
+  const [isClosed, setIsClosed] = useState(false);
   const [animationCompleted, setAnimationCompleted] = useState(false);
 
   useEffect(() => {
-    setAnimationCompleted(false);
-
     if (isAdd) {
       Animated.timing(loadAdd, {
-        toValue: 1,
+        toValue: 0.5,
         duration: 300,
         useNativeDriver: false,
       }).start(() => {
         setAnimationCompleted(true);
       });
     }
-  }, [isAdd]);
+
+    if (isClosed) {
+      Animated.timing(loadAdd, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: false,
+      }).start(() => {
+        setAnimationCompleted(false);
+        setIsClosed(false);
+        setIsAdd(false);
+        loadAdd.setValue(0);
+      });
+    }
+
+  }, [isAdd, isClosed]);
 
   return (
     <Block>
@@ -38,23 +51,36 @@ const browser = () => {
         style={{
           bottom: 0,
           alignSelf: 'flex-end',
-          width: loadAdd.interpolate({
-            inputRange: [0, 1],
-            outputRange: [100, Dimensions.get('window').width],
-          }),
-          height: loadAdd.interpolate({
-            inputRange: [0, 1],
-            outputRange: [140, Dimensions.get('window').height],
-          }),
+          width: !isClosed
+            ? loadAdd.interpolate({
+                inputRange: [0, 0.5],
+                outputRange: [100, Dimensions.get('window').width],
+              })
+            : loadAdd.interpolate({
+                inputRange: [0.5, 1],
+                outputRange: [Dimensions.get('window').width, 100],
+              }),
+          height: !isClosed
+            ? loadAdd.interpolate({
+                inputRange: [0, 0.5],
+                outputRange: [140, Dimensions.get('window').height],
+              })
+            : loadAdd.interpolate({
+                inputRange: [0.5, 1],
+                outputRange: [Dimensions.get('window').height, 140],
+              }),
         }}
       >
-        {!isAdd ? (
-          <ButtonCreateAppointment setIsAdd={setIsAdd}/>
-        ) : (
+        {(!isClosed && isAdd) || (!isAdd && !isClosed) && (
+          <ButtonCreateAppointment setIsAdd={setIsAdd} />
+        )}
+        {(isAdd || isClosed) && (
           <CreateAppointment
             loadAdd={loadAdd}
             animationCompleted={animationCompleted}
-            setAnimationCompleted={setAnimationCompleted}
+            isAdd={isAdd}
+            isClosed={isClosed}
+            setIsClosed={setIsClosed}
           />
         )}
       </Block>

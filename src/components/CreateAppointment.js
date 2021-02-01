@@ -6,46 +6,59 @@ import CheckoutHeaderContext from '../context';
 import { Block, Button, Input, Photo, Text } from '../elements';
 import { icons } from '../utils';
 
-const createAppointment = ({ loadAdd, animationCompleted, setAnimationCompleted }) => {
+const createAppointment = ({ loadAdd, animationCompleted, isAdd, setIsClosed, isClosed }) => {
   const [title, setTitle] = useState('');
   const [address, setAddress] = useState('');
   const [date, setDate] = useState(new Date().toLocaleDateString());
   const [hour, setHour] = useState(new Date().toLocaleTimeString());
   const [switchValue, setSwitchValue] = useState(false);
 
-  const [loadCreator, setLoadCreator] = useState(new Animated.Value(0));
+  const [loadCreator] = useState(new Animated.Value(0));
 
   const { toggleCheckoutHeader } = useContext(CheckoutHeaderContext);
 
   useEffect(() => {
 
     if(animationCompleted) {
-      Animated.timing(loadCreator, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
+      setTimeout(() => {
+        Animated.timing(loadCreator, {
+          toValue: 1,
+          duration: 600,
+          useNativeDriver: false,
+        }).start();
+      }, 400)
     }
   }, [animationCompleted])
 
   return (
     <Block
+      flex={false}
       animated
       color={'white'}
-      padding={[theme.sizes.padding * 2, theme.sizes.padding]}
+      padding={!isClosed ? [theme.sizes.padding * 2, theme.sizes.padding] : 0}
       style={{
         borderRadius: theme.sizes.radius * 2,
-        width: loadAdd.interpolate({
-          inputRange: [0, 1],
-          outputRange: [60, Dimensions.get('window').width],
-        }),
-        height: loadAdd.interpolate({
-          inputRange: [0, 1],
-          outputRange: [60, Dimensions.get('window').height],
-        }),
+        width: !isClosed
+          ? loadAdd.interpolate({
+              inputRange: [0, 0.5],
+              outputRange: [60, Dimensions.get('window').width],
+            })
+          : loadAdd.interpolate({
+              inputRange: [0.5, 1],
+              outputRange: [Dimensions.get('window').width, 60],
+            }),
+        height: !isClosed
+          ? loadAdd.interpolate({
+              inputRange: [0, 0.5],
+              outputRange: [60, Dimensions.get('window').height],
+            })
+          : loadAdd.interpolate({
+              inputRange: [0.5, 1],
+              outputRange: [Dimensions.get('window').height, 60],
+            }),
       }}
     >
-      {animationCompleted && (
+      {animationCompleted && !isClosed && (
         <Block
           animated
           style={{
@@ -56,10 +69,14 @@ const createAppointment = ({ loadAdd, animationCompleted, setAnimationCompleted 
           }}
         >
           <Block flex={false} margin={theme.sizes.caption / 2}>
-            <Button renderIcon={false} style onPress={() => {
-              toggleCheckoutHeader()
-              setAnimationCompleted(false)
-              }}>
+            <Button
+              renderIcon={false}
+              style
+              onPress={() => {
+                toggleCheckoutHeader();
+                setIsClosed(true);
+              }}
+            >
               <MaterialIcons
                 name="close"
                 size={24}
