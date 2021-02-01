@@ -1,11 +1,12 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Animated, Dimensions, Switch } from 'react-native';
 import { theme } from '../constants';
+import CheckoutHeaderContext from '../context';
 import { Block, Button, Input, Photo, Text } from '../elements';
 import { icons } from '../utils';
 
-const createAppointment = ({ loadAdd, animationCompleted }) => {
+const createAppointment = ({ loadAdd, animationCompleted, setAnimationCompleted }) => {
   const [title, setTitle] = useState('');
   const [address, setAddress] = useState('');
   const [date, setDate] = useState(new Date().toLocaleDateString());
@@ -13,6 +14,8 @@ const createAppointment = ({ loadAdd, animationCompleted }) => {
   const [switchValue, setSwitchValue] = useState(false);
 
   const [loadCreator, setLoadCreator] = useState(new Animated.Value(0));
+
+  const { toggleCheckoutHeader } = useContext(CheckoutHeaderContext);
 
   useEffect(() => {
 
@@ -53,7 +56,10 @@ const createAppointment = ({ loadAdd, animationCompleted }) => {
           }}
         >
           <Block flex={false} margin={theme.sizes.caption / 2}>
-            <Button renderIcon={false} style>
+            <Button renderIcon={false} style onPress={() => {
+              toggleCheckoutHeader()
+              setAnimationCompleted(false)
+              }}>
               <MaterialIcons
                 name="close"
                 size={24}
