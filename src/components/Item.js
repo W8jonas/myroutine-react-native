@@ -9,7 +9,8 @@ const item = ({
   setSelectedOrigin, 
   selectedOrigin, 
   dimensionsOptionOrigin, 
-  dimensionsOptionClicked 
+  dimensionsOptionClicked,
+  scrollAppointmentToIndex 
 }) => {
   
   const [dimensionsClicked, setDimensionsClicked] = useState({});
@@ -31,7 +32,7 @@ const item = ({
     <Button
       renderIcon={false}
       style
-      onPress={(() => { setSelectedOrigin(selected), setSelected(item.id) })}
+      onPress={(() => { setSelectedOrigin(selected), setSelected(item.id), scrollAppointmentToIndex(item) })}
       reference={elementRef}
       onLayout={(event) => {
         if (elementRef) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, FlatList, ScrollView, StatusBar } from 'react-native';
 import { Background, Options, Item, Card, CreateAppointment, ButtonCreateAppointment } from '../components';
 import { theme } from '../constants';
@@ -13,6 +13,8 @@ const browser = () => {
   const [isAdd, setIsAdd] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
   const [animationCompleted, setAnimationCompleted] = useState(false);
+
+  const flatlistRef = useRef();
 
   useEffect(() => {
     if (isAdd) {
@@ -39,6 +41,14 @@ const browser = () => {
     }
 
   }, [isAdd, isClosed]);
+
+  const scrollAppointmentToIndex = (item) => {
+    flatlistRef.current.scrollToIndex({
+      animated: true,
+      index: data.indexOf(item),
+      viewPosition: 0.5,
+    })
+  }
 
   return (
     <Block>
@@ -71,9 +81,10 @@ const browser = () => {
               }),
         }}
       >
-        {(!isClosed && isAdd) || (!isAdd && !isClosed) && (
-          <ButtonCreateAppointment setIsAdd={setIsAdd} />
-        )}
+        {(!isClosed && isAdd) ||
+          (!isAdd && !isClosed && (
+            <ButtonCreateAppointment setIsAdd={setIsAdd} />
+          ))}
         {(isAdd || isClosed) && (
           <CreateAppointment
             loadAdd={loadAdd}
@@ -98,6 +109,7 @@ const browser = () => {
               keyExtractor={(item) => `${item.id}`}
               renderItem={({ item }) => (
                 <Item
+                  scrollAppointmentToIndex={scrollAppointmentToIndex}
                   item={item}
                   selectedOrigin={selectedOrigin}
                   setSelectedOrigin={setSelectedOrigin}
@@ -119,6 +131,7 @@ const browser = () => {
             }}
           >
             <FlatList
+              ref={flatlistRef}
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}
