@@ -134,6 +134,7 @@ const browser = () => {
               ref={flatlistRef}
               horizontal
               pagingEnabled
+              scrollEnabled={false}
               showsHorizontalScrollIndicator={false}
               scrollEventThrottle={16}
               snapToAlignment="center"
