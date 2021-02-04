@@ -28,6 +28,7 @@ const Input = ({
   defaultValue,
   onChangeText,
   submitEditing,
+  textColor
 }) => {
   const [isToggleSecure, setIsToggleSecure] = useState(false);
 
@@ -38,7 +39,7 @@ const Input = ({
          flex={false}
        >
          {label ? (
-           <Text bold black={!error}>
+           <Text bold color={textColor}>
              {label}
            </Text>
          ) : null}
@@ -63,7 +64,7 @@ const Input = ({
           rightLabel
         ) : (
           <Icon
-            color={theme.colors.black}
+            color={textColor}
             size={theme.sizes.font * 1.35}
             name={!toggleSecure ? 'md-eye' : 'md-eye-off'}
           />
@@ -94,6 +95,7 @@ const Input = ({
       ? { height: height, paddingTop: 12, paddingBottom: 12 }
       : { height: theme.sizes.base * 3 },
     styles.input,
+    textColor ? { color: textColor } : { color: theme.colors.black },
     error && { borderColor: theme.colors.accent },
     style,
   ];
@@ -164,7 +166,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: theme.colors.secondary,
     fontSize: theme.sizes.font,
-    color: theme.colors.black,
     paddingLeft: theme.sizes.base - 6,
     paddingRight: theme.sizes.base - 6,
     height: theme.sizes.base * 3,

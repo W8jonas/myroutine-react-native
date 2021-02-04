@@ -2,7 +2,7 @@ import React from 'react';
 import { theme } from '../constants';
 import { Block, Button, Photo, Text } from '../elements';
 
-const card = ({ title, important, hour, address, date, icon }) => {
+const card = ({ title, important, hour, address, date, icon, backgroundColor, textColor }) => {
   
   const dt = new Date(date);  
 
@@ -28,7 +28,7 @@ const card = ({ title, important, hour, address, date, icon }) => {
         margin={[0, theme.sizes.caption /2, theme.sizes.padding, theme.sizes.caption/2]}
         padding={theme.sizes.caption}
         card
-        color={'white'}
+        color={backgroundColor}
         width={140}
         height={200}
       >
@@ -36,7 +36,7 @@ const card = ({ title, important, hour, address, date, icon }) => {
           <Text gray caption style={{ paddingBottom: theme.sizes.base }}>
             {important && 'IMPORTANT'}
           </Text>
-          <Text bold>{title}</Text>
+          <Text bold color={textColor}>{title}</Text>
         </Block>
         <Block bottom column style={{ paddingTop: theme.sizes.caption }}>
           <Text
@@ -54,8 +54,8 @@ const card = ({ title, important, hour, address, date, icon }) => {
               <Photo image={icon} width={28} height={28} />
             </Block>
             <Block bottom column flex={false}>
-              <Text bold>{dt.getDate()}</Text>
-              <Text caption>{monthNames[dt.getMonth()]}</Text>
+              <Text bold color={textColor}>{dt.getDate()}</Text>
+              <Text caption color={textColor}>{monthNames[dt.getMonth()]}</Text>
             </Block>
           </Block>
         </Block>

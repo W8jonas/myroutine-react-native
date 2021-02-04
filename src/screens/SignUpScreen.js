@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { theme } from '../constants';
+import { useTheme } from '../context/themeContext';
 import { Block, Button, Input, Text } from '../elements';
 
 const signUp = ({ setIsSignUp }) => {
@@ -10,26 +11,43 @@ const signUp = ({ setIsSignUp }) => {
   
   const [checked, setChecked] = useState(false);
 
+  const { colors } = useTheme();
+
   return (
     <Block
-      color="white"
+      color={colors.background}
       padding={[theme.sizes.padding * 2, theme.sizes.padding]}
     >
       <Button style renderIcon={false} onPress={() => setIsSignUp(false)}>
         <Block flex={false} margin={[0, 0, theme.sizes.padding, 0]}>
-          <AntDesign name={'arrowleft'} size={18} color={theme.colors.black} />
+          <AntDesign name={'arrowleft'} size={18} color={colors.text} />
         </Block>
       </Button>
       <Block flex={false}>
-        <Input label="Your Name" defaultValue={name} onChangeText={setName} />
-        <Input label="Email" defaultValue={email} onChangeText={setEmail} />
         <Input
+          textColor={colors.text}
+          label="Your Name"
+          defaultValue={name}
+          onChangeText={setName}
+        />
+        <Input
+          textColor={colors.text}
+          label="Email"
+          defaultValue={email}
+          onChangeText={setEmail}
+        />
+        <Input
+          textColor={colors.text}
           label="Password"
           secure
           defaultValue={password}
           onChangeText={setPassword}
         />
-        <Button style={{ paddingTop: theme.sizes.base }} renderIcon={false} onPress={() => setChecked(prevChecked => !prevChecked)}>
+        <Button
+          style={{ paddingTop: theme.sizes.base }}
+          renderIcon={false}
+          onPress={() => setChecked((prevChecked) => !prevChecked)}
+        >
           <Block
             center
             flex={false}
@@ -43,12 +61,13 @@ const signUp = ({ setIsSignUp }) => {
                 size={18}
               />
             </Block>
-            <Text caption black>
+            <Text caption color={colors.text}>
               I agree to the{' '}
               <Text
                 caption
                 bold
                 secondary
+                textColor={colors.text}
                 style={{ textDecorationLine: 'underline' }}
               >
                 Terms & Conditions and Privacy Policy
@@ -61,7 +80,7 @@ const signUp = ({ setIsSignUp }) => {
         flex={false}
         padding={[theme.sizes.padding * 2, 0, theme.sizes.padding, 0]}
       >
-        <Button>
+        <Button colorBackgroundIcon={colors.background} colorIcon={colors.text}>
           <Text bold white>
             Sign Up
           </Text>

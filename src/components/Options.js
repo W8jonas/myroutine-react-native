@@ -56,7 +56,7 @@ const Bar = ({ sourceBarDimensions, destineBarDimensions }) => {
   );
 }
 
-const options = ({ renderContent }) => {
+const options = ({ renderContent, backgroundColor, textColor }) => {
   
   const [dimensionsSource, setDimensionsSource] = useState({});
   const [dimensionsDestine, setDimensionsDestine] = useState({});
@@ -64,7 +64,7 @@ const options = ({ renderContent }) => {
   return (
     <Block
       flex={0.25}
-      color={'white'}
+      color={backgroundColor}
       padding={[
         theme.sizes.padding * 2,
         theme.sizes.padding,
@@ -73,7 +73,7 @@ const options = ({ renderContent }) => {
       ]}
     >
       <Block flex={false} padding={[theme.sizes.padding * 2.5, 0]}>
-        <Text h3 bold black>
+        <Text h3 bold color={textColor}>
           My routine
         </Text>
       </Block>

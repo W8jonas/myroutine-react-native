@@ -48,4 +48,16 @@ const fonts = {
   },
 };
 
-export { colors, sizes, fonts };
+const lightColors = {
+  background: colors.white,
+  primary: colors.primary,
+  text: colors.black,
+};
+
+const darkColors = {
+  background: colors.black,
+  primary: colors.primary,
+  text: colors.white,
+};
+
+export { colors, sizes, fonts, lightColors, darkColors };

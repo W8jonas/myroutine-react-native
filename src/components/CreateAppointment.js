@@ -2,11 +2,17 @@ import { MaterialIcons } from '@expo/vector-icons';
 import React, { useContext, useEffect, useState } from 'react';
 import { Animated, Dimensions, Switch } from 'react-native';
 import { theme } from '../constants';
-import CheckoutHeaderContext from '../context';
+import CheckoutHeaderContext from '../context/checkoutHeaderContext';
 import { Block, Button, Input, Photo, Text } from '../elements';
 import { icons } from '../utils';
 
-const createAppointment = ({ loadAdd, animationCompleted, isAdd, setIsClosed, isClosed }) => {
+const createAppointment = ({ 
+  loadAdd, 
+  animationCompleted, 
+  setIsClosed, 
+  isClosed, 
+  backgroundColor, 
+  textColor}) => {
   const [title, setTitle] = useState('');
   const [address, setAddress] = useState('');
   const [date, setDate] = useState(new Date().toLocaleDateString());
@@ -34,7 +40,7 @@ const createAppointment = ({ loadAdd, animationCompleted, isAdd, setIsClosed, is
     <Block
       flex={false}
       animated
-      color={'white'}
+      color={backgroundColor}
       padding={!isClosed ? [theme.sizes.padding * 2, theme.sizes.padding] : 0}
       style={{
         borderRadius: theme.sizes.radius * 2,
@@ -77,16 +83,18 @@ const createAppointment = ({ loadAdd, animationCompleted, isAdd, setIsClosed, is
                 setIsClosed(true);
               }}
             >
-              <MaterialIcons
-                name="close"
-                size={24}
-                color={theme.colors.black}
-              />
+              <MaterialIcons name="close" size={24} color={textColor} />
             </Button>
           </Block>
           <Block flex={false}>
-            <Input label="Title" defaultValue={title} onChangeText={setTitle} />
             <Input
+              textColor={textColor}
+              label="Title"
+              defaultValue={title}
+              onChangeText={setTitle}
+            />
+            <Input
+              textColor={textColor}
               label="Address"
               defaultValue={address}
               onChangeText={setAddress}
@@ -94,6 +102,7 @@ const createAppointment = ({ loadAdd, animationCompleted, isAdd, setIsClosed, is
             <Block row flex={false} space={'between'}>
               <Block flex={false} width={Dimensions.get('window').width / 2.5}>
                 <Input
+                  textColor={textColor}
                   label="Date"
                   defaultValue={date}
                   onChangeText={setDate}
@@ -101,6 +110,7 @@ const createAppointment = ({ loadAdd, animationCompleted, isAdd, setIsClosed, is
               </Block>
               <Block flex={false} width={Dimensions.get('window').width / 2.5}>
                 <Input
+                  textColor={textColor}
                   label="Hour"
                   defaultValue={hour}
                   onChangeText={setHour}
@@ -116,8 +126,9 @@ const createAppointment = ({ loadAdd, animationCompleted, isAdd, setIsClosed, is
             space={'between'}
             padding={[theme.sizes.padding, 0]}
           >
-            <Text bold>Important</Text>
+            <Text color={textColor} bold>Important</Text>
             <Switch
+              thumbColor={backgroundColor}
               value={switchValue}
               onValueChange={setSwitchValue}
               trackColor={{
@@ -127,7 +138,7 @@ const createAppointment = ({ loadAdd, animationCompleted, isAdd, setIsClosed, is
             />
           </Block>
           <Block padding={[theme.sizes.padding, 0]}>
-            <Text bold style={{ paddingLeft: theme.sizes.base }}>
+            <Text color={textColor} bold style={{ paddingLeft: theme.sizes.base }}>
               Icons
             </Text>
             <Block
@@ -148,7 +159,7 @@ const createAppointment = ({ loadAdd, animationCompleted, isAdd, setIsClosed, is
             </Block>
           </Block>
           <Block flex={false}>
-            <Button>
+            <Button colorBackgroundIcon={backgroundColor} colorIcon={textColor}>
               <Text white bold>
                 Create appointment
               </Text>

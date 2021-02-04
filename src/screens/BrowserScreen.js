@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, FlatList, ScrollView, StatusBar } from 'react-native';
 import { Background, Options, Item, Card, CreateAppointment, ButtonCreateAppointment } from '../components';
 import { theme } from '../constants';
-import { Block } from '../elements';
+import { useTheme } from '../context/themeContext';
+import { Block, Button } from '../elements';
 import { data } from '../utils';
 
-const browser = () => {
+const browser = ({ navigation }) => {
   const [selectedOrigin, setSelectedOrigin] = useState(1);
   const [selected, setSelected] = useState(selectedOrigin);
 
@@ -15,6 +17,8 @@ const browser = () => {
   const [animationCompleted, setAnimationCompleted] = useState(false);
 
   const flatlistRef = useRef();
+
+  const { colors, isDark, setScheme } = useTheme();
 
   useEffect(() => {
     if (isAdd) {
@@ -42,6 +46,21 @@ const browser = () => {
 
   }, [isAdd, isClosed]);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackImage: () => (
+        <Button renderIcon={false} style>
+          <AntDesign name={'arrowleft'} color={colors.text} size={18} />
+        </Button>
+      ),
+      headerRight: () => (
+        <Button renderIcon={false} style onPress={() => toggleScheme()}>
+          <MaterialIcons name={'brightness-6'} size={18} color={colors.text} />
+        </Button>
+      ),
+    });
+  }, [isDark])
+
   const scrollAppointmentToIndex = (item) => {
     flatlistRef.current.scrollToIndex({
       animated: true,
@@ -49,6 +68,10 @@ const browser = () => {
       viewPosition: 0.5,
     })
   }
+
+  const toggleScheme = () => {
+    isDark ? setScheme('light') : setScheme('dark');
+  };
 
   return (
     <Block>
@@ -83,7 +106,7 @@ const browser = () => {
       >
         {(!isClosed && isAdd) ||
           (!isAdd && !isClosed && (
-            <ButtonCreateAppointment setIsAdd={setIsAdd} />
+            <ButtonCreateAppointment setIsAdd={setIsAdd} backgroundColor={colors.background} textColor={colors.text} />
           ))}
         {(isAdd || isClosed) && (
           <CreateAppointment
@@ -92,12 +115,19 @@ const browser = () => {
             isAdd={isAdd}
             isClosed={isClosed}
             setIsClosed={setIsClosed}
+            backgroundColor={colors.background}
+            textColor={colors.text}
           />
         )}
       </Block>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar
+        animated
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+      />
       <Background>
         <Options
+          backgroundColor={colors.background}
+          textColor={colors.text}
           renderContent={({
             dimensionsOptionClicked,
             dimensionsOptionOrigin,
@@ -117,6 +147,7 @@ const browser = () => {
                   setSelected={setSelected}
                   dimensionsOptionClicked={dimensionsOptionClicked}
                   dimensionsOptionOrigin={dimensionsOptionOrigin}
+                  textColor={colors.text}
                 />
               )}
             />
@@ -162,6 +193,8 @@ const browser = () => {
                         address={item2.address}
                         date={item2.date}
                         icon={item2.icon}
+                        backgroundColor={colors.background}
+                        textColor={colors.text}
                       />
                     );
                   })}

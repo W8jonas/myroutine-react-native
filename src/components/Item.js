@@ -10,7 +10,8 @@ const item = ({
   selectedOrigin, 
   dimensionsOptionOrigin, 
   dimensionsOptionClicked,
-  scrollAppointmentToIndex 
+  scrollAppointmentToIndex,
+  textColor
 }) => {
   
   const [dimensionsClicked, setDimensionsClicked] = useState({});
@@ -56,7 +57,7 @@ const item = ({
       }}
     >
       <Block flex={false} padding={[0, theme.sizes.caption / 2]}>
-        <Text bold gray={selected !== item.id} black={selected === item.id}>
+        <Text bold gray={selected !== item.id} color={textColor}>
           {item.name}
         </Text>
       </Block>
