@@ -5,6 +5,7 @@ const colors = {
   white: '#FFFFFF',
   gray: '#7B7B7B',
   black: '#202429',
+  danger: '#D43838',
 };
 
 const sizes = {

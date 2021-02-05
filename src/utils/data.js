@@ -4,6 +4,7 @@ export default [
     name: 'this week',
     appointments: [
       {
+        index: 1,
         title: 'meeting with developers',
         address: '3891 Ranchview Dr. Richardson, Cal...',
         date: '04/14/2021',
@@ -12,6 +13,7 @@ export default [
         icon: require('../assets/images/Icon-1.png'),
       },
       {
+        index: 2,
         title: 'meeting with customers',
         address: '3891 Ranchview Dr. Richardson, California 62639',
         date: '04/18/2021',
@@ -20,6 +22,7 @@ export default [
         icon: null,
       },
       {
+        index: 3,
         title: 'give training on the new tool',
         address: '3891 Ranchview Dr. Richardson, California 62639',
         date: '04/24/2021',
@@ -34,6 +37,7 @@ export default [
     name: 'this month',
     appointments: [
       {
+        index: 1,
         title: 'meeting with developers',
         address: '3891 Ranchview Dr. Richardson, Cal...',
         date: '04/14/2021',
@@ -42,6 +46,7 @@ export default [
         icon: require('../assets/images/Icon-1.png'),
       },
       {
+        index: 2,
         title: 'meeting with customers',
         address: '3891 Ranchview Dr. Richardson, California 62639',
         date: '04/18/2021',
@@ -56,6 +61,7 @@ export default [
     name: 'important',
     appointments: [
       {
+        index: 1,
         title: 'meeting with customers',
         address: '3891 Ranchview Dr. Richardson, California 62639',
         date: '04/18/2021',
@@ -70,6 +76,7 @@ export default [
     name: "it's close",
     appointments: [
       {
+        index: 1,
         title: 'meeting with customers',
         address: '3891 Ranchview Dr. Richardson, California 62639',
         date: '04/18/2021',

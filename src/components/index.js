@@ -4,6 +4,7 @@ import Item from './Item';
 import Card from './Card';
 import CreateAppointment from './CreateAppointment';
 import ButtonCreateAppointment from './ButtonCreateAppointment';
+import ButtonDelete from './ButtonDelete';
 
 export {
   Background,
@@ -12,4 +13,5 @@ export {
   Card,
   CreateAppointment,
   ButtonCreateAppointment,
+  ButtonDelete,
 };

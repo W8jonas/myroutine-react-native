@@ -1,7 +1,7 @@
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, FlatList, ScrollView, StatusBar } from 'react-native';
-import { Background, Options, Item, Card, CreateAppointment, ButtonCreateAppointment } from '../components';
+import { Background, Options, Item, Card, CreateAppointment, ButtonCreateAppointment, ButtonDelete } from '../components';
 import { theme } from '../constants';
 import { useTheme } from '../context/themeContext';
 import { Block, Button } from '../elements';
@@ -16,7 +16,10 @@ const browser = ({ navigation }) => {
   const [isClosed, setIsClosed] = useState(false);
   const [animationCompleted, setAnimationCompleted] = useState(false);
 
-  const flatlistRef = useRef();
+  const [draggingCard, setDraggingCard] = useState(false);
+  const [appointmentFlatListHeight, setAppointmentFlatListHeight] = useState(0);
+  const appointmentFlatListRef = useRef();
+  const [dimensionsButtonDelete, setDimensionsButtonDelete] = useState({});
 
   const { colors, isDark, setScheme } = useTheme();
 
@@ -62,7 +65,7 @@ const browser = ({ navigation }) => {
   }, [isDark])
 
   const scrollAppointmentToIndex = (item) => {
-    flatlistRef.current.scrollToIndex({
+    appointmentFlatListRef.current.scrollToIndex({
       animated: true,
       index: data.indexOf(item),
       viewPosition: 0.5,
@@ -106,7 +109,11 @@ const browser = ({ navigation }) => {
       >
         {(!isClosed && isAdd) ||
           (!isAdd && !isClosed && (
-            <ButtonCreateAppointment setIsAdd={setIsAdd} backgroundColor={colors.background} textColor={colors.text} />
+            <ButtonCreateAppointment
+              setIsAdd={setIsAdd}
+              backgroundColor={colors.background}
+              textColor={colors.text}
+            />
           ))}
         {(isAdd || isClosed) && (
           <CreateAppointment
@@ -120,6 +127,7 @@ const browser = ({ navigation }) => {
           />
         )}
       </Block>
+      {draggingCard && <ButtonDelete setDimensionsButtonDelete={setDimensionsButtonDelete} />}
       <StatusBar
         animated
         barStyle={isDark ? 'light-content' : 'dark-content'}
@@ -155,6 +163,7 @@ const browser = ({ navigation }) => {
         />
         <Block flex={0.75}>
           <ScrollView
+            scrollEnabled={!draggingCard}
             showsVerticalScrollIndicator={false}
             style={{
               paddingTop: theme.sizes.padding * 2,
@@ -162,7 +171,7 @@ const browser = ({ navigation }) => {
             }}
           >
             <FlatList
-              ref={flatlistRef}
+              ref={appointmentFlatListRef}
               horizontal
               pagingEnabled
               scrollEnabled={false}
@@ -187,6 +196,7 @@ const browser = ({ navigation }) => {
                   {item.appointments.map((item2) => {
                     return (
                       <Card
+                        index={item2.index}
                         title={item2.title}
                         important={item2.important}
                         hour={item2.hour}
@@ -195,11 +205,16 @@ const browser = ({ navigation }) => {
                         icon={item2.icon}
                         backgroundColor={colors.background}
                         textColor={colors.text}
+                        setDraggingCard={setDraggingCard}
+                        dimensionsButtonDelete={dimensionsButtonDelete}
                       />
                     );
                   })}
                 </Block>
               )}
+              onLayout={(e) => {
+                setAppointmentFlatListHeight(e.nativeEvent.layout.height);
+              }}
             />
           </ScrollView>
         </Block>
