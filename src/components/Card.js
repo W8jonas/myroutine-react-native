@@ -13,8 +13,10 @@ const card = ({
   icon,
   backgroundColor,
   textColor,
+  draggingCard,
   setDraggingCard,
-  dimensionsButtonDelete
+  setAnimatingCard,
+  dimensionsButtonDelete,
 }) => {
   const pan = useRef(new Animated.ValueXY()).current;
   const [currentXY, setCurrentXY] = useState({});
@@ -23,9 +25,12 @@ const card = ({
   const [translateY] = useState(new Animated.Value(0));
   const [translateX] = useState(new Animated.Value(0));
 
-  const[moving, setMoving] = useState(false);
+  const [showCard, setShowCard] = useState(true);
+  const [finishedAnimation, setFinishedAnimation] = useState(false);
 
-  const[zIndexCard, setZIndexCard] = useState(3);
+  const [deletingProgress] = useState(new Animated.Value(0));
+
+  const [zIndexCard, setZIndexCard] = useState(3);
 
   const dt = new Date(date);
 
@@ -57,11 +62,16 @@ const card = ({
   };
 
   useEffect(() => {
-    if(Object.entries(currentXY).length !== 0) {
-      setMoving(true);
+    if (Object.entries(currentXY).length !== 0) {
       checkApproachDelete();
     }
-  }, [currentXY])
+  }, [currentXY]);
+
+  useEffect(() => {
+    if(finishedAnimation) {
+      deleteAppointment();
+    }
+  }, [finishedAnimation])
 
   const panResponder = useRef(
     PanResponder.create({
@@ -78,6 +88,7 @@ const card = ({
           y: event.nativeEvent.pageY,
         });
         setDraggingCard(true);
+        setAnimatingCard(true);
         setZIndexCard(4);
 
         Animated.event(
@@ -93,94 +104,132 @@ const card = ({
       },
       onPanResponderRelease: () => {
         setDraggingCard(false);
-        setDeleting(false);
         setZIndexCard(3);
         translateX.setValue(0);
         translateY.setValue(0);
-        Animated.spring(pan, {
-          toValue: 0,
-          useNativeDriver: false,
-        }).start();
 
+        setFinishedAnimation(true);
       },
     })
   ).current;
 
+  const deleteAppointment = () => {
+    if(deleting) {
+      Animated.timing(deletingProgress, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: false,
+      }).start(() => {
+        setDeleting(false);
+        setShowCard(false);
+        setAnimatingCard(false);
+      });
+    } else {
+      Animated.spring(pan, {
+        toValue: 0,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
+
   return (
-    <Animated.View    
-      key={index}
-      style={{
-        zIndex: zIndexCard,
-        transform: [
-          { translateX: pan.x },
-          { translateY: pan.y },
-          { scale: deleting ? translateX.interpolate(
-            {
-              inputRange: [0, dimensionsButtonDelete.x],
-              outputRange: [0.6, 1],
-            }) : 1,  
-          },
-          { scale: deleting ? translateY.interpolate(
-            {
-              inputRange: [0, dimensionsButtonDelete.y],
-              outputRange: [0.6, 1],
-            }) : 1,  
-          }
-        ],
-      }}
-      {...panResponder.panHandlers}
-    >
-      <Button renderIcon={false} style>
-        <Block
-          flex={false}
-          margin={[
-            0,
-            theme.sizes.caption / 2,
-            theme.sizes.padding,
-            theme.sizes.caption / 2,
-          ]}
-          padding={theme.sizes.caption}
-          card
-          color={backgroundColor}
-          width={140}
-          height={200}
+    <>
+      {showCard && (
+        <Animated.View
+          key={index}
+          style={{
+            zIndex: zIndexCard,
+            transform: [
+              {
+                translateX:
+                  !draggingCard && deleting
+                    ? deletingProgress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [pan.x._value, dimensionsButtonDelete.x],
+                      })
+                    : pan.x,
+              },
+              {
+                translateY:
+                  !draggingCard && deleting
+                    ? deletingProgress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [
+                          pan.y._value,
+                          dimensionsButtonDelete.y / 2,
+                        ],
+                      })
+                    : pan.y,
+              },
+              {
+                scale: deleting
+                  ? translateX.interpolate({
+                      inputRange: [0, dimensionsButtonDelete.x],
+                      outputRange: [0.3, 0.8],
+                    })
+                  : 1,
+              },
+            ],
+            opacity: !draggingCard && deleting ? deletingProgress.interpolate({
+              inputRange: [0, 1],
+              outputRange: [1, 0]
+            }) : 1
+          }}
+          {...panResponder.panHandlers}
         >
-          <Block flex={false}>
-            <Text gray caption style={{ paddingBottom: theme.sizes.base }}>
-              {important && 'IMPORTANT'}
-            </Text>
-            <Text bold color={textColor}>
-              {title}
-            </Text>
-          </Block>
-          <Block bottom column style={{ paddingTop: theme.sizes.caption }}>
-            <Text
-              secondary
-              caption
-              style={{ paddingBottom: theme.sizes.caption / 2 }}
+          <Button renderIcon={false} style>
+            <Block
+              flex={false}
+              margin={[
+                0,
+                theme.sizes.caption / 2,
+                theme.sizes.padding,
+                theme.sizes.caption / 2,
+              ]}
+              padding={theme.sizes.caption}
+              card
+              color={backgroundColor}
+              width={140}
+              height={200}
             >
-              {hour}
-            </Text>
-            <Text numberOfLines={2} secondary size={9}>
-              {address}
-            </Text>
-            <Block row space={'between'}>
-              <Block center bottom flex={false}>
-                <Photo image={icon} width={28} height={28} />
-              </Block>
-              <Block bottom column flex={false}>
+              <Block flex={false}>
+                <Text gray caption style={{ paddingBottom: theme.sizes.base }}>
+                  {important && 'IMPORTANT'}
+                </Text>
                 <Text bold color={textColor}>
-                  {dt.getDate()}
+                  {title}
                 </Text>
-                <Text caption color={textColor}>
-                  {monthNames[dt.getMonth()]}
+              </Block>
+              <Block bottom column style={{ paddingTop: theme.sizes.caption }}>
+                <Text
+                  secondary
+                  caption
+                  style={{ paddingBottom: theme.sizes.caption / 2 }}
+                >
+                  {hour}
                 </Text>
+                <Text numberOfLines={2} secondary size={9}>
+                  {address}
+                </Text>
+                <Block row space={'between'}>
+                  <Block center bottom flex={false}>
+                    <Photo image={icon} width={28} height={28} />
+                  </Block>
+                  <Block bottom column flex={false}>
+                    <Text bold color={textColor}>
+                      {dt.getDate()}
+                    </Text>
+                    <Text caption color={textColor}>
+                      {monthNames[dt.getMonth()]}
+                    </Text>
+                  </Block>
+                </Block>
               </Block>
             </Block>
-          </Block>
-        </Block>
-      </Button>
-    </Animated.View>
+          </Button>
+        </Animated.View>
+      )}
+    </>
   );
 };
 

@@ -15,7 +15,8 @@ const browser = ({ navigation }) => {
   const [isAdd, setIsAdd] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
   const [animationCompleted, setAnimationCompleted] = useState(false);
-
+  
+  const [animatingCard, setAnimatingCard] = useState(false);
   const [draggingCard, setDraggingCard] = useState(false);
   const [appointmentFlatListHeight, setAppointmentFlatListHeight] = useState(0);
   const appointmentFlatListRef = useRef();
@@ -127,7 +128,9 @@ const browser = ({ navigation }) => {
           />
         )}
       </Block>
-      {draggingCard && <ButtonDelete setDimensionsButtonDelete={setDimensionsButtonDelete} />}
+      {animatingCard && (
+        <ButtonDelete setDimensionsButtonDelete={setDimensionsButtonDelete} />
+      )}
       <StatusBar
         animated
         barStyle={isDark ? 'light-content' : 'dark-content'}
@@ -206,6 +209,7 @@ const browser = ({ navigation }) => {
                         backgroundColor={colors.background}
                         textColor={colors.text}
                         setDraggingCard={setDraggingCard}
+                        setAnimatingCard={setAnimatingCard}
                         dimensionsButtonDelete={dimensionsButtonDelete}
                       />
                     );
