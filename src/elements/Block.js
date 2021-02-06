@@ -29,7 +29,7 @@ const Block = ({
   fullBorder,
   children,
   animated,
-  key,
+  idKey,
   onLayout,
   reference,
 }) => {
@@ -157,7 +157,7 @@ const Block = ({
     return (
       <Animated.View
         ref={reference}
-        key={key}
+        key={idKey}
         style={blockStyles}
         onLayout={onLayout}
       >
@@ -167,7 +167,7 @@ const Block = ({
   }
 
   return (
-    <View ref={reference} key={key} style={blockStyles} onLayout={onLayout}>
+    <View ref={reference} key={idKey} style={blockStyles} onLayout={onLayout}>
       {children}
     </View>
   );

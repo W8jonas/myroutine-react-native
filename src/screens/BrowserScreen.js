@@ -190,7 +190,7 @@ const browser = ({ navigation }) => {
                   width={
                     Dimensions.get('window').width - theme.sizes.padding * 2
                   }
-                  key={index}
+                  idKey={index}
                   style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
