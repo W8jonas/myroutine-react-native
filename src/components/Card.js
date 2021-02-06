@@ -125,6 +125,8 @@ const card = ({
         setAnimatingCard(false);
       });
     } else {
+      setAnimatingCard(false);
+      setFinishedAnimation(false);
       Animated.spring(pan, {
         toValue: 0,
         useNativeDriver: false,
