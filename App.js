@@ -1,16 +1,19 @@
-import * as React from "react";
-import { View, Text } from "react-native";
+import * as React from 'react';
+import { StatusBar } from 'react-native';
+import { Block } from './src/elements';
+import AppContainer from './src/routes';
+import { AppearanceProvider } from 'react-native-appearance';
+import { ThemeProvider } from './src/context/themeContext';
 
 export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Universal React with Expo</Text>
-    </View>
+    <AppearanceProvider>
+      <ThemeProvider>
+        <Block>
+          <StatusBar barStyle="light-content" />
+          <AppContainer />
+        </Block>
+      </ThemeProvider>
+    </AppearanceProvider>
   );
 }
