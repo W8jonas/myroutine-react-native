@@ -1,17 +1,17 @@
-import Background from './Background';
-import Options from './Options';
-import Item from './Item';
-import Card from './Card';
-import CreateAppointment from './CreateAppointment';
-import ButtonCreateAppointment from './ButtonCreateAppointment';
-import ButtonDelete from './ButtonDelete';
+import Background from './Background'
+import ButtonCreateAppointment from './ButtonCreateAppointment'
+import ButtonDelete from './ButtonDelete'
+import Card from './Card'
+import CreateAppointment from './CreateAppointment'
+import Item from './Item'
+import Options from './Options'
 
 export {
-  Background,
-  Options,
-  Item,
-  Card,
-  CreateAppointment,
-  ButtonCreateAppointment,
-  ButtonDelete,
-};
+	Background,
+	Options,
+	Item,
+	Card,
+	CreateAppointment,
+	ButtonCreateAppointment,
+	ButtonDelete,
+}
